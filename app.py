@@ -41,7 +41,23 @@ def app():
         publication_year = st.text_input("Enter Publication Year")
         if st.button("Add Book"):
             result = library.add_book(isbn, title, author, publication_year)
+            st.info(result)
+
+    elif choice == "Borrow":
+        isbn = st.text_input("Enter ISBN")
+        if st.button("Borrow Book"):
+            result = library.borrow_book(isbn)
+            st.info(result)
+
+    elif choice == "Return":
+        isbn = st.text_input("Enter ISBN")
+        if st.button("Return Book"):
+            result = library.return_book(isbn)
             st.write(result)
+
+    elif choice == "View":
+        available_books_df = library.get_books_df()
+        st.dataframe(available_books_df)
 
 
 # Run the app function

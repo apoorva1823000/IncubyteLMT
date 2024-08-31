@@ -1,5 +1,6 @@
 from Library.book import Book
 from Library.skiplist import SkipList
+import pandas as pd
 
 
 class LibraryFunctions:
@@ -30,3 +31,19 @@ class LibraryFunctions:
             return "Book was not borrowed."
         book.is_borrowed = False
         return "Book returned."
+
+    def get_books_df(self) -> pd.DataFrame:
+        # Extract data from skip list for displaying
+        books = []
+        current = self.books.header.forward[0]
+        while current:
+            books.append({
+                "ISBN": current.key,
+                "Title": current.value.title,
+                "Author": current.value.author,
+                "Publication Year": current.value.publication_year,
+                "Available": "✔" if not current.value.is_borrowed else "",
+                "Borrowed": "✔" if current.value.is_borrowed else ""
+            })
+            current = current.forward[0]
+        return pd.DataFrame(books)
