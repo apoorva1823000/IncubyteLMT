@@ -1,0 +1,41 @@
+import streamlit as st
+from Library.libraryFunctions import LibraryFunctions
+
+
+# library = LibraryFunctions()
+if 'library' not in st.session_state:
+    st.session_state.library = LibraryFunctions()
+
+st.set_page_config(page_title="Library Management Tool",
+                   layout="centered",
+                   page_icon="https://img.icons8.com/?size=100&id=ADLVLEVwdHGD&format=png&color=000000",
+                   initial_sidebar_state='auto',
+                   menu_items={
+                       'Get Help': 'https://apoorvaportfolio.netlify.app/',
+                       'About': "This Streamlit app was created by Apoorva .S. Mehta as a part of the technical round "
+                                "for the placement in Incubytes"
+                   }
+                   )
+
+with st.sidebar:
+    st.image("https://img.icons8.com/?size=100&id=QQWitn2kaDjj&format=png&color=000000")
+    st.title("Library Manager")
+    choice = st.radio(
+        "Navigation",
+        ["View", "Add", "Borrow", "Return"],
+        key="navigation_radio"  # Unique key added here
+    )
+    st.info(
+        "This application allows you to access Library and add, borrow, return or look through the available books."
+    )
+
+def app():
+    library = st.session_state.library
+
+    st.title("Library Management System")
+
+    choice = st.sidebar.radio("Navigation", ["View", "Add", "Borrow", "Return"])
+
+# Run the app function
+if __name__ == "__main__":
+    app()
