@@ -41,3 +41,32 @@ class SkipList:
                 new_node.forward[i] = update[i].forward[i]
                 update[i].forward[i] = new_node
 
+    def search(self, key):
+        current = self.header
+        for i in range(self.current_level, -1, -1):
+            while current.forward[i] and current.forward[i].key < key:
+                current = current.forward[i]
+        current = current.forward[0]
+        if current and current.key == key:
+            return current.value
+        else:
+            return None
+
+    def delete(self, key):
+        update = [None] * (self.max_level + 1)
+        current = self.header
+
+        for i in range(self.current_level, -1, -1):
+            while current.forward[i] and current.forward[i].key < key:
+                current = current.forward[i]
+            update[i] = current
+
+        current = current.forward[0]
+
+        if current and current.key == key:
+            for i in range(self.current_level + 1):
+                if update[i].forward[i] != current:
+                    break
+                update[i].forward[i] = current.forward[i]
+            while self.current_level > 0 and self.header.forward[self.current_level] is None:
+                self.current_level -= 1
