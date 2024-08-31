@@ -6,7 +6,7 @@ from Library.libraryFunctions import LibraryFunctions
 if 'library' not in st.session_state:
     st.session_state.library = LibraryFunctions()
 
-# Setup the streamlit page
+# Set up the streamlit page
 st.set_page_config(page_title="Library Management Tool",
                    layout="centered",
                    page_icon="https://img.icons8.com/?size=100&id=ADLVLEVwdHGD&format=png&color=000000",
