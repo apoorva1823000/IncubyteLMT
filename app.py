@@ -38,6 +38,11 @@ def app():
     st.title("Library Management System")
 
     if choice == "Add":
+        col1, col2 = st.columns(2)
+        with col1:
+            st.image("https://img.icons8.com/?size=100&id=42690&format=png&color=000000")
+        with col2:
+            st.info("We are always happy to see our users donate new books for everyone to read and gain knowledge")
         isbn = st.text_input("Enter ISBN")
         title = st.text_input("Enter Title")
         author = st.text_input("Enter Author")
@@ -47,18 +52,34 @@ def app():
             st.info(result)
 
     elif choice == "Borrow":
+        col1, col2 = st.columns(2)
+        with col1:
+            st.image("https://img.icons8.com/?size=100&id=13199&format=png&color=000000")
+        with col2:
+            st.info("You can borrow various books as per your choice from here")
         isbn = st.text_input("Enter ISBN")
         if st.button("Borrow Book"):
             result = library.borrow_book(isbn)
             st.info(result)
 
     elif choice == "Return":
+        col1, col2 = st.columns(2)
+        with col1:
+            st.image("https://img.icons8.com/?size=100&id=13217&format=png&color=000000")
+        with col2:
+            st.info("Kindly timely return the books you've borrowed so that others can access the same too")
         isbn = st.text_input("Enter ISBN")
         if st.button("Return Book"):
             result = library.return_book(isbn)
             st.info(result)
 
     elif choice == "View":
+        col1,col2 = st.columns(2)
+        with col1:
+            st.image("https://img.icons8.com/?size=100&id=RXrON5kyN96A&format=png&color=000000")
+        with col2:
+            st.info("Here you get access to the whole catalogue of available books along with the info of them being "
+                    "available or borrowed")
         available_books_df = library.get_books_df()
         if available_books_df.size==0:
             st.info("No books available currently")
@@ -66,6 +87,11 @@ def app():
             st.dataframe(available_books_df)
 
     elif choice == "Delete":
+        col1,col2 = st.columns(2)
+        with col1:
+            st.image("https://img.icons8.com/?size=100&id=79kWwPwewtvH&format=png&color=000000")
+        with col2:
+            st.info("You can remove the book from the catalogue if its no more available in the library.")
         isbn = st.text_input("Enter ISBN")
         if st.button("Delete the book"):
             results = library.delete_book(isbn)

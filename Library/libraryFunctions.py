@@ -29,7 +29,7 @@ class LibraryFunctions:
             else:
                 self.cursor.execute("UPDATE books SET is_borrowed = 1 WHERE isbn = ?", (isbn,))
                 self.conn.commit()
-                return "Book borrowed."
+                return "Book borrowed. Happy Learning !"
         else:
             return "No book found."
 
@@ -43,7 +43,7 @@ class LibraryFunctions:
             else:
                 self.cursor.execute("UPDATE books SET is_borrowed = 0 WHERE isbn = ?", (isbn,))
                 self.conn.commit()
-                return "Book returned."
+                return "Book returned. Thank You !"
         else:
             return "No book found."
 
