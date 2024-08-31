@@ -28,3 +28,17 @@ class Library:
             return f"Book '{title}' added to the library."
         except sqlite3.IntegrityError:
             return f"Book with ISBN {isbn} already exists."
+
+    def borrow_book(self, isbn):
+        self.cursor.execute("SELECT is_borrowed, title FROM books WHERE isbn = ?", (isbn,))
+        result = self.cursor.fetchone()
+        if result:
+            is_borrowed, title = result
+            if is_borrowed:
+                return f"Sorry, the book '{title}' is already borrowed."
+            else:
+                self.cursor.execute("UPDATE books SET is_borrowed = 1 WHERE isbn = ?", (isbn,))
+                self.conn.commit()
+                return f"You have borrowed '{title}'."
+        else:
+            return f"No book found with ISBN {isbn}."
