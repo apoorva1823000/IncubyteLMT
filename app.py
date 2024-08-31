@@ -2,9 +2,11 @@ import streamlit as st
 from Library.libraryFunctions import LibraryFunctions
 
 # library = LibraryFunctions()
+# State Management by Streamlit to manage session history
 if 'library' not in st.session_state:
     st.session_state.library = LibraryFunctions()
 
+# Setup the streamlit page
 st.set_page_config(page_title="Library Management Tool",
                    layout="centered",
                    page_icon="https://img.icons8.com/?size=100&id=ADLVLEVwdHGD&format=png&color=000000",
@@ -16,6 +18,7 @@ st.set_page_config(page_title="Library Management Tool",
                    }
                    )
 
+# Sidebar setup with options for adding, borrowing, returning and scouting through the library
 with st.sidebar:
     st.image("https://img.icons8.com/?size=100&id=QQWitn2kaDjj&format=png&color=000000")
     st.title("Library Manager")

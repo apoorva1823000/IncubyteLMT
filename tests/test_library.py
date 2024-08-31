@@ -1,3 +1,5 @@
+# This test script is for implementing functionalities in the libraryFunctions file to test the add, borrow, return features of the libraryFunction file
+
 import pytest
 from Library.libraryFunctions import LibraryFunctions
 

@@ -1,3 +1,5 @@
+# This test script is written for implementing the book initialization and borrowed or not status report.
+
 import pytest
 from Library.book import Book
 
