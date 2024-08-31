@@ -10,3 +10,12 @@ class Library:
         new_book = Book(isbn, title, author, publication_year)
         self.books.insert(isbn, new_book)
         return "Book added."
+
+    def borrow_book(self, isbn):
+        book = self.books.search(isbn)
+        if book is None:
+            return "No book found."
+        if book.is_borrowed:
+            return "Book already borrowed."
+        book.is_borrowed = True
+        return "Book borrowed."
