@@ -3,4 +3,10 @@ from Library.skiplist import SkipList
 class Library:
     def __init__(self):
         self.books = SkipList(max_level=4)
-    pass
+
+    def add_book(self, isbn, title, author, publication_year):
+        if self.books.search(isbn):
+            return "Book already exists."
+        new_book = Book(isbn, title, author, publication_year)
+        self.books.insert(isbn, new_book)
+        return "Book added."
