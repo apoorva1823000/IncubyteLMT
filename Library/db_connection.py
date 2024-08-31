@@ -42,3 +42,17 @@ class Library:
                 return f"You have borrowed '{title}'."
         else:
             return f"No book found with ISBN {isbn}."
+
+    def return_book(self, isbn):
+        self.cursor.execute("SELECT is_borrowed, title FROM books WHERE isbn = ?", (isbn,))
+        result = self.cursor.fetchone()
+        if result:
+            is_borrowed, title = result
+            if not is_borrowed:
+                return f"The book '{title}' was not borrowed."
+            else:
+                self.cursor.execute("UPDATE books SET is_borrowed = 0 WHERE isbn = ?", (isbn,))
+                self.conn.commit()
+                return f"Thank you for returning '{title}'."
+        else:
+            return f"No book found with ISBN {isbn}."
