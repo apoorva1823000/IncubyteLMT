@@ -1,51 +1,67 @@
 from Library.book import Book
-from Library.skiplist import SkipList
+from Library.db_connection import init_db, close_db
 import pandas as pd
-
+import sqlite3
 
 class LibraryFunctions:
     def __init__(self):
-        self.books = SkipList(max_level=4)
+        self.conn = init_db()
+        self.cursor = self.conn.cursor()
 
     def add_book(self, isbn, title, author, publication_year):
         if not isbn or not title or not author or not publication_year:
             return "Kindly Fill the form"
-        if self.books.search(isbn):
+        try:
+            self.cursor.execute("INSERT INTO books (isbn, title, author, publication_year) VALUES (?, ?, ?, ?)",
+                                (isbn, title, author, publication_year))
+            self.conn.commit()
+            return "Book added."
+        except sqlite3.IntegrityError:
             return "Book already exists."
-        new_book = Book(isbn, title, author, publication_year)
-        self.books.insert(isbn, new_book)
-        return "Book added."
 
     def borrow_book(self, isbn):
-        book = self.books.search(isbn)
-        if book is None:
+        self.cursor.execute("SELECT is_borrowed, title FROM books WHERE isbn = ?", (isbn,))
+        result = self.cursor.fetchone()
+        if result:
+            is_borrowed, title = result
+            if is_borrowed:
+                return "Book already borrowed."
+            else:
+                self.cursor.execute("UPDATE books SET is_borrowed = 1 WHERE isbn = ?", (isbn,))
+                self.conn.commit()
+                return "Book borrowed."
+        else:
             return "No book found."
-        if book.is_borrowed:
-            return "Book already borrowed."
-        book.is_borrowed = True
-        return "Book borrowed."
 
     def return_book(self, isbn):
-        book = self.books.search(isbn)
-        if book is None:
+        self.cursor.execute("SELECT is_borrowed, title FROM books WHERE isbn = ?", (isbn,))
+        result = self.cursor.fetchone()
+        if result:
+            is_borrowed, title = result
+            if not is_borrowed:
+                return "Book was not borrowed."
+            else:
+                self.cursor.execute("UPDATE books SET is_borrowed = 0 WHERE isbn = ?", (isbn,))
+                self.conn.commit()
+                return "Book returned."
+        else:
             return "No book found."
-        if not book.is_borrowed:
-            return "Book was not borrowed."
-        book.is_borrowed = False
-        return "Book returned."
 
     def get_books_df(self) -> pd.DataFrame:
-        # Extract data from skip list for displaying
-        books = []
-        current = self.books.header.forward[0]
-        while current:
-            books.append({
-                "ISBN": current.key,
-                "Title": current.value.title,
-                "Author": current.value.author,
-                "Publication Year": current.value.publication_year,
-                "Available": "✔" if not current.value.is_borrowed else "",
-                "Borrowed": "✔" if current.value.is_borrowed else ""
+        # Geting all books as a pandas DataFrame.
+        self.cursor.execute("SELECT isbn, title, author, publication_year, is_borrowed FROM books")
+        books = self.cursor.fetchall()
+        books_list = []
+        for isbn, title, author, publication_year, is_borrowed in books:
+            books_list.append({
+                "ISBN": isbn,
+                "Title": title,
+                "Author": author,
+                "Publication Year": publication_year,
+                "Available": "✔" if not is_borrowed else "",
+                "Borrowed": "✔" if is_borrowed else ""
             })
-            current = current.forward[0]
-        return pd.DataFrame(books)
+        return pd.DataFrame(books_list)
+
+    def __del__(self):
+        close_db(self.conn)
