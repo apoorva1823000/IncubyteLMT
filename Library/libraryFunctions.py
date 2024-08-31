@@ -1,71 +1,70 @@
-import sqlite3
-
-from Library.db_connection import execute_with_retry, get_db_connection, close_db
+from Library.book import Book
+from Library.db_connection import init_db, close_db
 import pandas as pd
-
+import sqlite3
 
 class LibraryFunctions:
     def __init__(self):
-        self.conn = get_db_connection()
+        self.conn = init_db()
         self.cursor = self.conn.cursor()
 
     def add_book(self, isbn, title, author, publication_year):
         if not isbn or not title or not author or not publication_year:
-            return "Kindly fill all the fields."
-
-        query = "INSERT INTO books (isbn, title, author, publication_year) VALUES (?, ?, ?, ?)"
+            return "Kindly Fill the form"
         try:
-            execute_with_retry(query, (isbn, title, author, publication_year))
-            return "Book added successfully."
+            self.cursor.execute("INSERT INTO books (isbn, title, author, publication_year) VALUES (?, ?, ?, ?)",
+                                (isbn, title, author, publication_year))
+            self.conn.commit()
+            return "Book added."
         except sqlite3.IntegrityError:
-            return "Book with this ISBN already exists."
+            return "Book already exists."
 
     def borrow_book(self, isbn):
-        query = "SELECT is_borrowed, title FROM books WHERE isbn = ?"
-        self.cursor.execute(query, (isbn,))
+        self.cursor.execute("SELECT is_borrowed, title FROM books WHERE isbn = ?", (isbn,))
         result = self.cursor.fetchone()
         if result:
             is_borrowed, title = result
             if is_borrowed:
                 return "Book already borrowed."
             else:
-                update_query = "UPDATE books SET is_borrowed = 1 WHERE isbn = ?"
-                execute_with_retry(update_query, (isbn,))
-                return "Book borrowed successfully. Happy learning!"
+                self.cursor.execute("UPDATE books SET is_borrowed = 1 WHERE isbn = ?", (isbn,))
+                self.conn.commit()
+                return "Book borrowed. Happy Learning !"
         else:
-            return "No book found with this ISBN."
+            return "No book found."
 
     def return_book(self, isbn):
-        query = "SELECT is_borrowed, title FROM books WHERE isbn = ?"
-        self.cursor.execute(query, (isbn,))
+        self.cursor.execute("SELECT is_borrowed, title FROM books WHERE isbn = ?", (isbn,))
         result = self.cursor.fetchone()
         if result:
             is_borrowed, title = result
             if not is_borrowed:
                 return "Book was not borrowed."
             else:
-                update_query = "UPDATE books SET is_borrowed = 0 WHERE isbn = ?"
-                execute_with_retry(update_query, (isbn,))
-                return "Book returned successfully. Thank you!"
+                self.cursor.execute("UPDATE books SET is_borrowed = 0 WHERE isbn = ?", (isbn,))
+                self.conn.commit()
+                return "Book returned. Thank You !"
         else:
-            return "No book found with this ISBN."
+            return "No book found."
 
     def delete_book(self, isbn):
         if not isbn:
-            return "Kindly enter the ISBN number."
-
-        delete_query = "DELETE FROM books WHERE isbn = ?"
-        result = execute_with_retry(delete_query, (isbn,))
-        if result == 0:
-            return "Book not found."
-        return "Book deleted successfully."
+            return "Kindly enter the ISBN number"
+        try:
+            self.cursor.execute("DELETE FROM books WHERE isbn=?", (isbn,))
+            self.conn.commit()
+            # Check if any rows were affected
+            if self.cursor.rowcount == 0:
+                return "Book Not Found"
+            return "Book Deleted Successfully"
+        except sqlite3.Error as e:
+            # Handling other possible exceptions
+            return f"An error occurred: {str(e)}"
 
     def get_books_df(self) -> pd.DataFrame:
-        """Get a DataFrame of all books in the library."""
-        query = "SELECT isbn, title, author, publication_year, is_borrowed FROM books"
-        self.cursor.execute(query)
+        # Geting all books as a pandas DataFrame.
+        self.cursor.execute("SELECT isbn, title, author, publication_year, is_borrowed FROM books")
         books = self.cursor.fetchall()
-
         books_list = []
         for isbn, title, author, publication_year, is_borrowed in books:
             books_list.append({
