@@ -1,10 +1,12 @@
 import random
 
+
 class Node:
     def __init__(self, key, value, level):
         self.key = key
         self.value = value
         self.forward = [None] * (level + 1)
+
 
 class SkipList:
     def __init__(self, max_level):

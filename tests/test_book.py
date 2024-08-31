@@ -1,5 +1,6 @@
 import pytest
-from Library.book import Book
+from Libraries.book import Book
+
 
 def test_book_initialization():
     book = Book("1234567890", "The Great Book", "John Doe", "2024")
@@ -8,6 +9,7 @@ def test_book_initialization():
     assert book.author == "John Doe"
     assert book.publication_year == "2024"
     assert not book.is_borrowed
+
 
 def test_book_status():
     book = Book("1234567890", "The Great Book", "John Doe", "2024")
