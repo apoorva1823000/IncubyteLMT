@@ -19,3 +19,12 @@ class Library:
             return "Book already borrowed."
         book.is_borrowed = True
         return "Book borrowed."
+
+    def return_book(self, isbn):
+        book = self.books.search(isbn)
+        if book is None:
+            return "No book found."
+        if not book.is_borrowed:
+            return "Book was not borrowed."
+        book.is_borrowed = False
+        return "Book returned."
