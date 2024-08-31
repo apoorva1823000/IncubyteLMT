@@ -60,7 +60,10 @@ def app():
 
     elif choice == "View":
         available_books_df = library.get_books_df()
-        st.dataframe(available_books_df)
+        if available_books_df.size==0:
+            st.info("No books available currently")
+        else:
+            st.dataframe(available_books_df)
 
 
 # Run the app function
