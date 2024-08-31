@@ -8,6 +8,8 @@ class LibraryFunctions:
         self.books = SkipList(max_level=4)
 
     def add_book(self, isbn, title, author, publication_year):
+        if not isbn or not title or not author or not publication_year:
+            return "Kindly Fill the form"
         if self.books.search(isbn):
             return "Book already exists."
         new_book = Book(isbn, title, author, publication_year)
