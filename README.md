@@ -14,6 +14,7 @@ This is a Library Management System built as a part of technical round for place
 # About
 This LMT features adding new books to the library, viewing them, borrowing as well as returning the books too.
 <br>The datastructure used here is a skiplist for faster transactions with increased users. 
+<br>The database used is SQLite for easier and lite data handling.
 <br>The test cases included in the repositories ensure TDD method being followed while constructing the project.
 
 # Cloning the repository
@@ -22,7 +23,7 @@ To clone this repository you can fetch the repo link from "<>Code" section and c
 ```bash
 git clone https://github.com/apoorva1823000/IncubyteLMT.git
 ```
-<br>Download the requirements mentioned in the requirements.txt so as to run the project
+<br>Download the requirements mentioned in the requirements.txt to run the project
 <br> Once you've installed the requirements open the terminal and run 
 ```python
 streamlit run app.py
