@@ -1,5 +1,5 @@
 import pytest
-from library.skiplist import SkipList
+from Library.skiplist import SkipList
 
 def test_skiplist_insert_and_search():
     skip_list = SkipList(max_level=4)
