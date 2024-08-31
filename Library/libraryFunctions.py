@@ -1,5 +1,5 @@
-from Library.book import Book
-from Library.skiplist import SkipList
+from book import Book
+from skiplist import SkipList
 
 
 class LibraryFunctions:

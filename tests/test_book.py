@@ -1,5 +1,5 @@
 import pytest
-from Libraries.book import Book
+from Library.book import Book
 
 
 def test_book_initialization():
