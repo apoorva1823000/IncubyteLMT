@@ -68,9 +68,9 @@ def app():
             st.image("https://img.icons8.com/?size=100&id=13217&format=png&color=000000")
         with col2:
             st.info("Kindly timely return the books you've borrowed so that others can access the same too")
-        isbn = st.text_input("Enter ISBN")
+        borrowID = st.text_input("Enter ISBN")
         if st.button("Return Book"):
-            result = library.return_book(isbn)
+            result = library.return_book(borrowID)
             st.info(result)
 
     elif choice == "View":
