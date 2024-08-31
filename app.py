@@ -24,7 +24,7 @@ with st.sidebar:
     st.title("Library Manager")
     choice = st.radio(
         "Navigation",
-        ["View", "Add", "Borrow", "Return"],
+        ["View", "Add", "Borrow", "Return", "Delete"],
         key="navigation_radio"  # Unique key added here
     )
     st.info(
@@ -56,7 +56,7 @@ def app():
         isbn = st.text_input("Enter ISBN")
         if st.button("Return Book"):
             result = library.return_book(isbn)
-            st.write(result)
+            st.info(result)
 
     elif choice == "View":
         available_books_df = library.get_books_df()
@@ -65,6 +65,11 @@ def app():
         else:
             st.dataframe(available_books_df)
 
+    elif choice == "Delete":
+        isbn = st.text_input("Enter ISBN")
+        if st.button("Delete the book"):
+            results = library.delete_book(isbn)
+            st.info(results)
 
 # Run the app function
 if __name__ == "__main__":
