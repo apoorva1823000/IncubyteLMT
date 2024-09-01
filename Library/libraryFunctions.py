@@ -106,16 +106,23 @@ class LibraryFunctions:
     def delete_book(self, isbn):
         if not isbn:
             return "Kindly enter the ISBN number"
-        try:
-            self.cursor.execute("DELETE FROM books WHERE isbn=?", (isbn,))
-            self.conn.commit()
-            # Check if any rows were affected
-            if self.cursor.rowcount == 0:
-                return "Book Not Found"
-            return "Book Deleted Successfully"
-        except sqlite3.Error as e:
-            # Handling other possible exceptions
-            return f"An error occurred: {str(e)}"
+        self.cursor.execute("SELECT is_borrowed, title FROM books WHERE isbn = ?", (isbn,))
+        result = self.cursor.fetchone()
+        if result:
+            is_borrowed, title = result
+            if is_borrowed:
+                return "Book already borrowed. Cannot be deleted until returned"
+            else:
+                try:
+                    self.cursor.execute("DELETE FROM books WHERE isbn=?", (isbn,))
+                    self.conn.commit()
+                    # Check if any rows were affected
+                    if self.cursor.rowcount == 0:
+                        return "Book Not Found"
+                    return "Book Deleted Successfully"
+                except sqlite3.Error as e:
+                    # Handling other possible exceptions
+                    return f"An error occurred: {str(e)}"
 
     def get_books_df(self) -> pd.DataFrame:
         # Geting all books as a pandas DataFrame.
