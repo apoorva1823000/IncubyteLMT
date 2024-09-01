@@ -3,7 +3,7 @@ import sqlite3
 
 def init_db():
     # Initializing the SQLite database and creating the necessary tables.
-    conn = sqlite3.connect('library.db', check_same_thread=False)
+    conn = sqlite3.connect('Apoorva_Incubyte_library.db', check_same_thread=False)
     c = conn.cursor()
 
     # Create books table

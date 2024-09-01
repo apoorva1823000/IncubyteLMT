@@ -14,8 +14,8 @@ def db_connection():
     conn.close()
     # Optionally, remove the test database file if needed
     import os
-    if os.path.exists('library.db'):
-        os.remove('library.db')
+    if os.path.exists('Apoorva_Incubyte_library.db'):
+        os.remove('Apoorva_Incubyte_library.db')
 
 def test_init_db(db_connection):
     """Test the database initialization."""
