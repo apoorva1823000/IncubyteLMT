@@ -1,11 +1,3 @@
-[//]: # (<<<<<<< HEAD)
-
-[//]: # (# Library Management System)
-
-[//]: # (=======)
-
-[//]: # (>>>>>>> 8b4aa788114a8164e68b6c9b4f4d3323dbf671e2)
-
 # Library Management System
 This is a Library Management System built as a part of technical round for placement in Incubytes.
 <br>This is a streamlit web app that can be accessed either by cloning the repository or via link provided below:
@@ -16,6 +8,8 @@ This LMT features adding new books to the library, viewing them, borrowing as we
 <br>The datastructure used here is a skiplist for faster transactions with increased users. 
 <br>The database used is SQLite for easier and lite data handling.
 <br>The test cases included in the repositories ensure TDD method being followed while constructing the project.
+<br>The LMT provides you with options to view the available books, add any new book, borrow the same and return as well as delete if the book is unavailable now. The borrower receives a unique ID each time he borrows the book to ensure authenticity of the one who wishes to return the book i.e. only the borrower can return the book not anyone else.
+<br>Choose the appropriate option from the side bar to perform the functionality 
 
 # Cloning the repository
 To clone this repository you can fetch the repo link from "<>Code" section and clone this repository using 
